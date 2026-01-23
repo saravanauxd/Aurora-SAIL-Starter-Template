@@ -1,0 +1,13 @@
+{
+  "enabled": true,
+  "name": "SAIL Validator",
+  "description": "Automatically validates generated SAIL code using the repl and fixes any syntax errors",
+  "version": "1",
+  "when": {
+    "type": "agentStop"
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Check if any SAIL code was generated in this session. If yes, validate it using the SAIL repl: 1) Navigate to https://flv77hud70.execute-api.us-east-1.amazonaws.com/docs-repl-254/_a-0000e546-b896-8000-a7c3-01ef9001ef90_7503, 2) Click .CodeMirror element, 3) Press Meta+A and Backspace to clear, 4) Use page.evaluate to set clipboard: navigator.clipboard.writeText(sailCode), 5) Press Meta+V to paste, 6) Click Evaluate button, 7) Wait 3 seconds, 8) Check for error in paragraph elements containing 'Expression evaluation error'. If error found, extract it, fix the SAIL code, update the file, and repeat validation until no errors. Only validate if SAIL was generated."
+  }
+}
