@@ -1,8 +1,16 @@
-# Aurora Setup Power
+---
+name: "aurora-setup"
+displayName: "Aurora Setup"
+description: "Automates the complete setup of the Aurora MCP server for SAIL interface generation in Kiro IDE. Handles cloning, building, and configuring the Aurora design system server."
+keywords: ["aurora", "mcp", "setup", "sail", "appian", "design-system", "installation"]
+author: "Appian"
+---
+
+# Aurora Setup
 
 Automates the complete setup of the Aurora MCP server for SAIL interface generation in Kiro IDE.
 
-## What This Power Does
+## Overview
 
 This Power handles the entire Aurora MCP setup process automatically:
 
@@ -12,6 +20,17 @@ This Power handles the entire Aurora MCP setup process automatically:
 4. **Builds the server** - Compiles the MCP server
 5. **Configures Kiro** - Updates `.kiro/settings/mcp.json` with the correct path
 6. **Validates setup** - Tests the connection
+
+## Available Steering Files
+
+This power includes detailed workflow documentation:
+
+- **setup-workflow.md** - Complete step-by-step setup process with error handling and troubleshooting
+
+To access the detailed workflow, use:
+```
+readSteering with powerName="aurora-setup", steeringFile="setup-workflow.md"
+```
 
 ## When to Use
 
