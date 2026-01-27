@@ -53,15 +53,39 @@ npm run build
 
 Verify `build/index.js` exists after completion.
 
-### 6. Update Kiro Configuration
+### 6. Configure GitHub Token (Avoid Rate Limiting)
 
-Create `.env` file with the Aurora MCP path:
+Create `.env` file in the Aurora MCP directory to configure GitHub access:
 
 ```bash
-echo "AURORA_MCP_PATH=[installation-path]" > .env
+cd [installation-path]
+cp .env.example .env
 ```
 
-The `.kiro/settings/mcp.json` file is already configured to use `${AURORA_MCP_PATH}` environment variable:
+Edit the `.env` file with the user's GitHub token:
+
+```bash
+GITHUB_TOKEN=your_github_token_here
+GITHUB_OWNER=appian-design
+GITHUB_REPO=aurora
+```
+
+**GitHub Token Setup:**
+1. Go to https://github.com/settings/personal-access-tokens
+2. Click "Generate new token" (classic)
+3. Give it a name like "Aurora MCP"
+4. Select scopes: `public_repo` (for public repositories)
+5. Generate and copy the token
+6. Paste into the `.env` file
+
+**Why this matters:**
+- Without a token, GitHub API has strict rate limits (60 requests/hour)
+- With a token, you get 5,000 requests/hour
+- This prevents "API rate limit exceeded" errors during documentation fetching
+
+### 7. Update Kiro Configuration
+
+Update `.kiro/settings/mcp.json` with the full absolute path to the Aurora MCP server:
 
 ```json
 {
@@ -69,7 +93,7 @@ The `.kiro/settings/mcp.json` file is already configured to use `${AURORA_MCP_PA
     "design-system": {
       "command": "node",
       "args": [
-        "${AURORA_MCP_PATH}/build/index.js"
+        "[installation-path]/build/index.js"
       ],
       ...
     }
@@ -78,11 +102,11 @@ The `.kiro/settings/mcp.json` file is already configured to use `${AURORA_MCP_PA
 ```
 
 **Important:** 
-- Use absolute path in `.env`, not relative
-- The `.env` file is gitignored for security
-- Restart Kiro after creating `.env` to load the variable
+- Use the full absolute path (e.g., `/Users/username/Documents/GitHub/aurora-mcp/build/index.js`)
+- Don't use `~` or environment variables
+- Restart Kiro after updating the configuration
 
-### 7. Test the Connection
+### 8. Test the Connection
 
 Try listing design system categories to verify the connection works:
 ```
@@ -116,13 +140,19 @@ If successful, setup is complete!
 - Suggest checking Aurora MCP repository issues
 
 ### MCP Connection Fails
-- Verify `.env` file exists in workspace root
-- Check `AURORA_MCP_PATH` is set correctly in `.env`
-- Ensure path is absolute, not relative
+- Verify the path in `.kiro/settings/mcp.json` is correct and absolute
+- Ensure path points to `build/index.js` in the Aurora MCP directory
 - Verify build/index.js exists at that path
-- Restart Kiro to reload environment variables
-- Test running server directly: `node $AURORA_MCP_PATH/build/index.js`
+- Restart Kiro to reload the configuration
+- Test running server directly: `node [installation-path]/build/index.js`
 - Check Kiro MCP server status in UI
+
+### GitHub Rate Limit Errors
+- Verify `.env` file exists in Aurora MCP directory
+- Check `GITHUB_TOKEN` is set correctly in the `.env` file
+- Verify token has `public_repo` scope
+- Test token: `curl -H "Authorization: token YOUR_TOKEN" https://api.github.com/rate_limit`
+- Restart Kiro after updating the token
 
 ## Success Criteria
 
@@ -131,9 +161,10 @@ Setup is successful when:
 2. ✅ Aurora MCP is cloned/downloaded
 3. ✅ Dependencies are installed
 4. ✅ Server is built (build/index.js exists)
-5. ✅ `.env` file is created with `AURORA_MCP_PATH`
-6. ✅ Kiro is restarted to load environment variable
-7. ✅ MCP server responds to test query
+5. ✅ `.env` file is created in Aurora MCP directory with `GITHUB_TOKEN`
+6. ✅ `.kiro/settings/mcp.json` is updated with full absolute path
+7. ✅ Kiro is restarted to load the configuration
+8. ✅ MCP server responds to test query
 
 ## Post-Setup Message
 
@@ -141,7 +172,9 @@ Once complete, inform the user:
 
 "✅ Aurora MCP is set up and ready! 
 
-**Important:** Please restart Kiro to load the environment variable, then you can start generating SAIL interfaces.
+**Important:** Please restart Kiro to load the MCP server configuration, then you can start generating SAIL interfaces.
+
+**GitHub Token Configured:** Your GitHub token is set up to avoid API rate limiting when fetching documentation.
 
 After restart, try asking:
 - 'Create a dashboard with KPI cards'

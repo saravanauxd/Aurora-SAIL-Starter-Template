@@ -19,8 +19,8 @@ Set up Aurora MCP for me
 The Power will automatically:
 - Check Node.js installation
 - Clone and build Aurora MCP server
-- Create `.env` file with the installation path
-- Configure Kiro settings
+- Configure GitHub token for API access
+- Update Kiro MCP settings with the installation path
 - Validate the connection
 
 ### 3. Start Building
@@ -38,8 +38,9 @@ That's it! The Aurora Design System and SAIL syntax guidance are automatically a
 If you prefer to set up manually:
 
 1. **Install Aurora MCP** - Clone and build from [aurora-mcp](https://github.com/appian-design/aurora-mcp)
-2. **Create .env file** - Copy `.env.example` to `.env` and set `AURORA_MCP_PATH`
-3. **Restart Kiro** - Reload the workspace to pick up the environment variable
+2. **Configure MCP path** - Edit `.kiro/settings/mcp.json` and update the `args` array with your full Aurora MCP installation path (e.g., `"/Users/username/aurora-mcp/build/index.js"`)
+3. **Configure GitHub token** - In your Aurora MCP directory, copy `.env.example` to `.env` and add your GitHub personal access token to avoid rate limiting
+4. **Restart Kiro** - Reload the workspace to connect to the MCP server
 
 ## What's Included
 
@@ -105,7 +106,6 @@ Result: Professional, syntactically correct SAIL code.
 
 ```
 aurora-starter/
-├── .env.example                        # Environment variable template
 ├── .gitignore                          # Git ignore rules
 ├── .kiro/
 │   ├── hooks/
@@ -113,7 +113,7 @@ aurora-starter/
 │   ├── powers/
 │   │   └── aurora-setup/               # Setup automation
 │   ├── settings/
-│   │   └── mcp.json                    # MCP configuration (uses $AURORA_MCP_PATH)
+│   │   └── mcp.json                    # MCP configuration (configure Aurora path here)
 │   └── steering/
 │       ├── SAIL_INTERFACE_GENERATION.md  # Generation guidelines
 │       └── SAIL_SYNTAX_REFERENCE.md      # Syntax patterns
@@ -137,13 +137,13 @@ a!myTeamPattern(
 
 ### Modify MCP Configuration
 
-The MCP path is configured via environment variable:
-- Edit `.env` to update `AURORA_MCP_PATH`
-- Restart Kiro to pick up changes
-- Or edit `.kiro/settings/mcp.json` directly for other settings:
-  - Add additional MCP servers
-  - Configure timeouts
-  - Adjust auto-approvals
+Edit `.kiro/settings/mcp.json` to customize:
+- Update Aurora MCP installation path in the `args` array
+- Add additional MCP servers
+- Configure timeouts
+- Adjust auto-approvals
+
+Restart Kiro after making changes.
 
 ### Add Examples
 
@@ -162,11 +162,12 @@ Place example SAIL files in `examples/` directory for reference.
 - Try: `cd aurora-mcp && npm install && npm run build`
 
 **MCP not connecting:**
-- Verify `.env` file exists with correct `AURORA_MCP_PATH`
-- Ensure path is absolute, not relative
-- Restart Kiro after changing `.env`
+- Verify `.kiro/settings/mcp.json` has the correct absolute path to Aurora MCP
+- Ensure the path points to `build/index.js` in your Aurora MCP directory
+- Check that Aurora MCP's `.env` file has a valid `GITHUB_TOKEN` configured
+- Restart Kiro after changing the configuration
 - Check MCP server status in Kiro UI
-- Test directly: `node $AURORA_MCP_PATH/build/index.js`
+- Test directly: `node /path/to/aurora-mcp/build/index.js`
 
 ### Generation Issues
 
