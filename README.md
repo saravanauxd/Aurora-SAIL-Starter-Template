@@ -37,7 +37,7 @@ That's it! The Aurora Design System and SAIL syntax guidance are automatically a
 
 If you prefer to set up manually:
 
-1. **Install Aurora MCP** - Clone and build from [aurora-mcp](https://github.com/appian/aurora-mcp)
+1. **Install Aurora MCP** - Clone and build from [aurora-mcp](https://github.com/appian-design/aurora-mcp)
 2. **Create .env file** - Copy `.env.example` to `.env` and set `AURORA_MCP_PATH`
 3. **Restart Kiro** - Reload the workspace to pick up the environment variable
 
