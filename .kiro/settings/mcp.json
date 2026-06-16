@@ -3,7 +3,7 @@
     "design-system": {
       "command": "node",
       "args": [
-        "/Users/username/aurora-mcp/build/index.js"
+        "/Users/saravana.manikandan/Projects/aurora-mcp/build/index.js"
       ],
       "timeout": 120000,
       "disabled": false,
